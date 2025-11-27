@@ -661,11 +661,12 @@
                     <div id="initial-palette" class="palette-content"></div>
                 </div>
 
+                <!-- 
                 <div id="palette-resize-handle"></div>
 
                 <div class="palette-box" id="free-palette-box">
                     <div class="palette-header">
-                        <!-- <span>スペース2</span> -->
+                        <span>スペース2</span>
                         <div class="zoom-controls">
                             <span>🔍</span>
                             <input type="range" id="free-zoom" min="0.3" max="2.0" step="0.1" value="0.3">
@@ -673,6 +674,7 @@
                     </div>
                     <div id="free-palette" class="palette-content"></div>
                 </div>
+-->
             </div>
         </div>
 
@@ -710,10 +712,10 @@
         let globalExtraMargin = 0;
 
         let initialPaletteScale = 0.3;
-        let freePaletteScale = 0.3;
+        // let freePaletteScale = 0.3;
 
         let isResizing = false;
-        let isPalletResizing = false;
+        // let isPalletResizing = false;
         let isDragging = false; // ドラッグ中フラグ
 
         let windowRatio = window.innerWidth / window.innerHeight;
@@ -735,15 +737,15 @@
         const startPuzzleBtn = document.getElementById('start-puzzle-btn');
         const puzzleBoard = document.getElementById('puzzle-board');
         const initialPalette = document.getElementById('initial-palette');
-        const freePalette = document.getElementById('free-palette');
+        // const freePalette = document.getElementById('free-palette');
         const completionModal = document.getElementById('completion-modal');
         const completedImage = document.getElementById('completed-image');
 
         const initialZoomSlider = document.getElementById('initial-zoom');
-        const freeZoomSlider = document.getElementById('free-zoom');
+        // const freeZoomSlider = document.getElementById('free-zoom');
 
         const resizeHandle = document.getElementById('resize-handle');
-        const paletteResizeHandle = document.getElementById('palette-resize-handle');
+        // const paletteResizeHandle = document.getElementById('palette-resize-handle');
         const initialPaletteBox = document.getElementById('initial-palette-box');
         const boardArea = document.getElementById('board-area');
         const gameScreen = document.getElementById('game-screen');
@@ -919,10 +921,10 @@
             updatePaletteItems(initialPalette, initialPaletteScale);
         });
 
-        freeZoomSlider.addEventListener('input', (e) => {
-            freePaletteScale = parseFloat(e.target.value);
-            updatePaletteItems(freePalette, freePaletteScale);
-        });
+        // freeZoomSlider.addEventListener('input', (e) => {
+            // freePaletteScale = parseFloat(e.target.value);
+        //     updatePaletteItems(freePalette, freePaletteScale);
+        // });
 
         function updatePaletteItems(palette, scale) {
             Array.from(palette.children).forEach(piece => {
@@ -1003,8 +1005,8 @@
         resizeHandle.addEventListener('mousedown', startResize);
         resizeHandle.addEventListener('touchstart', startResize, {passive: false});
         
-        paletteResizeHandle.addEventListener('mousedown', startPalletResize);
-        paletteResizeHandle.addEventListener('touchstart', startPalletResize, {passive: false});
+        // paletteResizeHandle.addEventListener('mousedown', startPalletResize);
+        // paletteResizeHandle.addEventListener('touchstart', startPalletResize, {passive: false});
 
         function startResize(e) {
             if (isDragging) return; // ドラッグ中はリサイズしない
@@ -1013,17 +1015,17 @@
             resizeHandle.classList.add('active');
         }
 
-        function startPalletResize(e) {
-            if (isDragging) return; // ドラッグ中はリサイズしない
-            e.preventDefault();
-            isPalletResizing = true;
-            paletteResizeHandle.classList.add('active');
-        }
+        // function startPalletResize(e) {
+        //     if (isDragging) return; // ドラッグ中はリサイズしない
+        //     e.preventDefault();
+        //     isPalletResizing = true;
+        //     paletteResizeHandle.classList.add('active');
+        // }
 
         document.addEventListener('mousemove', handleResize);
         document.addEventListener('touchmove', handleResize, {passive: false});
-        document.addEventListener('mousemove', handlePalletResize);
-        document.addEventListener('touchmove', handlePalletResize, {passive: false});
+        // document.addEventListener('mousemove', handlePalletResize);
+        // document.addEventListener('touchmove', handlePalletResize, {passive: false});
 
         function handleResize(e) {
             if (!isResizing || isDragging) return; // ドラッグ中は無視
@@ -1055,35 +1057,35 @@
             resizeGameContent();
         }
 
-        function handlePalletResize(e) {
-            if (!isPalletResizing || isDragging) return; // ドラッグ中は無視
-            e.preventDefault();
+        // function handlePalletResize(e) {
+        //     if (!isPalletResizing || isDragging) return; // ドラッグ中は無視
+        //     e.preventDefault();
 
-            const isTouch = e.type === 'touchmove';
-            const clientX = isTouch ? e.touches[0].clientX : e.clientX;
-            const clientY = isTouch ? e.touches[0].clientY : e.clientY;
+        //     const isTouch = e.type === 'touchmove';
+        //     const clientX = isTouch ? e.touches[0].clientX : e.clientX;
+        //     const clientY = isTouch ? e.touches[0].clientY : e.clientY;
 
-            const containerRect = document.getElementById('game-content').getBoundingClientRect();
-            // const isMobile = window.innerWidth <= 768;
-            const isWide = window.innerWidth / window.innerHeight >= 4 / 3;
+        //     const containerRect = document.getElementById('game-content').getBoundingClientRect();
+        //     // const isMobile = window.innerWidth <= 768;
+        //     const isWide = window.innerWidth / window.innerHeight >= 4 / 3;
 
-            if (isWide) {
-                const newHeight = clientY - containerRect.top;
-                if (newHeight > 100 && newHeight < containerRect.height - 100) {
-                    initialPaletteBox.style.flex = `0 0 ${newHeight}px`;
-                }
-            } else {
-                const newWidth = clientX - containerRect.left;
-                if (newWidth > 150 && newWidth < containerRect.width - 150) {
-                    initialPaletteBox.style.flex = `0 0 ${newWidth}px`;
-                }
-            }
-        }
+        //     if (isWide) {
+        //         const newHeight = clientY - containerRect.top;
+        //         if (newHeight > 100 && newHeight < containerRect.height - 100) {
+        //             initialPaletteBox.style.flex = `0 0 ${newHeight}px`;
+        //         }
+        //     } else {
+        //         const newWidth = clientX - containerRect.left;
+        //         if (newWidth > 150 && newWidth < containerRect.width - 150) {
+        //             initialPaletteBox.style.flex = `0 0 ${newWidth}px`;
+        //         }
+        //     }
+        // }
 
         document.addEventListener('mouseup', stopResize);
         document.addEventListener('touchend', stopResize);
-        document.addEventListener('mouseup', stopPalletResize);
-        document.addEventListener('touchend', stopPalletResize);
+        // document.addEventListener('mouseup', stopPalletResize);
+        // document.addEventListener('touchend', stopPalletResize);
 
         function stopResize() {
             if (isResizing) {
@@ -1092,12 +1094,12 @@
             }
         }
 
-        function stopPalletResize() {
-            if (isPalletResizing) {
-                isPalletResizing = false;
-                paletteResizeHandle.classList.remove('active');
-            }
-        }
+        // function stopPalletResize() {
+        //     if (isPalletResizing) {
+        //         isPalletResizing = false;
+        //         paletteResizeHandle.classList.remove('active');
+        //     }
+        // }
 
         window.addEventListener('resize', setPaletteContentMaxHeight);
         window.addEventListener('resize', setPaletteContentMaxWidth);
@@ -1178,8 +1180,8 @@
                 piece.element.style.height = canvasH + 'px';
                 if (piece.currentLocation === 'initial') {
                     applyPieceScale(piece.element, initialPaletteScale);
-                } else if (piece.currentLocation === 'free') {
-                    applyPieceScale(piece.element, freePaletteScale);
+                // } else if (piece.currentLocation === 'free') {
+                //     applyPieceScale(piece.element, freePaletteScale);
                 } else if (piece.currentLocation === 'board') {
                     placePieceOnBoard(piece, piece.col, piece.row);
                 }
@@ -1296,7 +1298,7 @@
             cleanupPieces();
             puzzleBoard.innerHTML = '';
             initialPalette.innerHTML = '';
-            freePalette.innerHTML = '';
+            // freePalette.innerHTML = '';
             boardState = new Array(puzzleCols * puzzleRows).fill(null);
             isCheckingCompletion = false;
 
@@ -1459,7 +1461,8 @@
             const isTouch = e.type.startsWith('touch');
             
             // リサイズハンドルをタッチした場合は無視
-            if (e.target === resizeHandle || resizeHandle.contains(e.target) || e.target === paletteResizeHandle || paletteResizeHandle.contains(e.target)) {
+            // if (e.target === resizeHandle || resizeHandle.contains(e.target) || e.target === paletteResizeHandle || paletteResizeHandle.contains(e.target)) {
+            if (e.target === resizeHandle || resizeHandle.contains(e.target)) {
                 return;
             }
             
@@ -1511,11 +1514,6 @@
             draggedDummy.style.transform = 'scale(1.05)';
             draggedDummy.style.margin = '0';
 
-            // draggedPiece.style.width = fullW + 'px';
-            // draggedPiece.style.height = fullH + 'px';
-            // draggedPiece.style.transform = 'scale(1.05)';
-            // draggedPiece.style.margin = '0';
-
             dragOffset.x = fullW * ratioX;
             dragOffset.y = fullH * ratioY;
 
@@ -1529,10 +1527,6 @@
             ctx.drawImage(draggedPiece, 0, 0);
 
             document.body.appendChild(draggedDummy);
-
-            //   // ダミーの初期配置
-            // draggedDummy.style.left = startRect.left + "px";
-            // draggedDummy.style.top  = startRect.top  + "px";
 
             // 本物はそのままパレットに置きつつ非表示
             draggedPiece.style.visibility = "hidden";
@@ -1577,7 +1571,7 @@
 
             const boardRect = puzzleBoard.getBoundingClientRect();
             const initialRect = document.getElementById('initial-palette-box').getBoundingClientRect();
-            const freeRect = document.getElementById('free-palette-box').getBoundingClientRect();
+            // const freeRect = document.getElementById('free-palette-box').getBoundingClientRect();
 
             const pieceObj = pieces.find(p => p.element === draggedPiece);
 
@@ -1626,9 +1620,10 @@
             }
 
             // パレットへの配置判定
-            if (sourceElement !== freePalette && isInside(pieceCenter, freeRect)) {
-                movePieceToPalette(pieceObj, freePalette);
-            } else if (sourceElement !== initialPalette && isInside(pieceCenter, initialRect)) {
+            // if (sourceElement !== freePalette && isInside(pieceCenter, freeRect)) {
+            //     movePieceToPalette(pieceObj, freePalette);
+            // } else if (sourceElement !== initialPalette && isInside(pieceCenter, initialRect)) {
+            if (sourceElement !== initialPalette && isInside(pieceCenter, initialRect)) {
                 movePieceToPalette(pieceObj, initialPalette);
             } else {
                 // どこにも該当しない場合は元の場所へ
@@ -1638,8 +1633,8 @@
                         const oldRow = Math.floor(pieceObj.boardIndex / puzzleCols);
                         const oldCol = pieceObj.boardIndex % puzzleCols;
                         placePieceOnBoard(pieceObj, oldCol, oldRow);
-                    } else {
-                        movePieceToPalette(pieceObj, freePalette);
+                    // } else {
+                    //     movePieceToPalette(pieceObj, freePalette);
                     }
                 } else {
                     // パレットの元の位置に戻す
@@ -1681,10 +1676,12 @@
                 paletteElement.appendChild(pieceObj.element);
             }
             
-            let currentScale = (paletteElement === initialPalette) ? initialPaletteScale : freePaletteScale;
-            applyPieceScale(pieceObj.element, currentScale);
+            // let currentScale = (paletteElement === initialPalette) ? initialPaletteScale : freePaletteScale;
+            // applyPieceScale(pieceObj.element, currentScale);
+            applyPieceScale(pieceObj.element, initialPaletteScale);
 
-            pieceObj.currentLocation = (paletteElement === initialPalette) ? 'initial' : 'free';
+            // pieceObj.currentLocation = (paletteElement === initialPalette) ? 'initial' : 'free';
+            pieceObj.currentLocation = 'initial';
             pieceObj.boardIndex = null;
         }
 
@@ -1725,19 +1722,21 @@
         function movePieceToPalette(pieceObj, paletteElement) {
             paletteElement.appendChild(pieceObj.element);
             
-            let currentScale = (paletteElement === initialPalette) ? initialPaletteScale : freePaletteScale;
-            applyPieceScale(pieceObj.element, currentScale);
+            // let currentScale = (paletteElement === initialPalette) ? initialPaletteScale : freePaletteScale;
+            // applyPieceScale(pieceObj.element, currentScale);
+            applyPieceScale(pieceObj.element, initialPaletteScale);
 
-            pieceObj.currentLocation = (paletteElement === initialPalette) ? 'initial' : 'free';
+            // pieceObj.currentLocation = (paletteElement === initialPalette) ? 'initial' : 'free';
+            pieceObj.currentLocation = 'initial';
             pieceObj.boardIndex = null;
         }
 
         function movePieceTo(pieceObj, targetContainer) {
-            if (targetContainer === puzzleBoard) {
-                movePieceToPalette(pieceObj, freePalette);
-            } else {
+            // if (targetContainer === puzzleBoard) {
+            //     movePieceToPalette(pieceObj, freePalette);
+            // } else {
                 movePieceToPalette(pieceObj, targetContainer);
-            }
+            // }
         }
 
         // --- 完成判定 ---
